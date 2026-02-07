@@ -1,0 +1,137 @@
+body {
+  font-family: "Macondo", cursive;
+  background-color: black;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas:
+    "intro intro"
+    "creation state"
+    "adventure state"
+    "finalBoss state";
+  gap: 12px;
+  min-height: 100vh;
+  padding: 12px;
+}
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2rem;
+}
+button {
+  font-size: 2rem;
+  font-family: "Macondo", cursive;
+  padding: 10px 20px;
+  background-color: rgb(162, 134, 97); /* A dark wood-like brown */
+  color: #f4e5c3; /* A parchment-like off-white */
+  border: 2px solid #c0a080; /* A lighter brown border */
+  text-shadow: 1px 1px 0px #a67c52; /* Gives a bit of depth to the text */
+  box-shadow: 2px 2px 0px #a67c52; /* Simulates an inset look */
+  border-radius: 4px; /* Slightly rounded corners */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: rgb(111, 93, 68); /* A lighter, worn wood color for hover */
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.3); /* A more pronounced shadow for hover */
+}
+
+button:active {
+  box-shadow: inset 1px 1px 2px 0px rgba(0, 0, 0, 0.5); /* An inset shadow for a pressed effect */
+  transform: translateY(2px); /* Moves the button down to simulate a press */
+}
+
+div {
+  background-color: #d6b77e;
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+}
+#statState {
+  background-color: #f6dba6;
+}
+
+/* Layout placements */
+#intro {
+  grid-area: intro;
+  margin: 0;
+  padding: 18px;
+}
+
+#state {
+  grid-area: state;
+  margin: 0;
+  padding: 12px;
+  align-self: start;
+  max-width: 320px;
+}
+
+/* Place each left-area element into its own grid row */
+#creation {
+  grid-area: creation;
+  margin: 0;
+  padding: 12px;
+}
+
+#adventure {
+  grid-area: adventure;
+  margin: 0;
+  padding: 12px;
+}
+
+#finalBoss {
+  grid-area: finalBoss;
+  margin: 0;
+  padding: 12px;
+}
+
+/* Small adjustments for inner layout */
+#creation > #class {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 700px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "intro"
+      "state"
+      "left";
+  }
+  #state {
+    max-width: none;
+  }
+  #creation,
+  #adventure,
+  #finalBoss {
+    grid-column: 1 / -1;
+  }
+}
+.medieval-button {
+  padding: 10px 20px;
+  background-color: #795649; /* A dark wood-like brown */
+  color: #f4e5c3; /* A parchment-like off-white */
+  border: 2px solid #c0a080; /* A lighter brown border */
+  font-family:
+    "Goudy Bookletter 1911", serif; /* A font with an old-style feel */
+  font-size: 18px;
+  text-shadow: 1px 1px 0px #a67c52; /* Gives a bit of depth to the text */
+  box-shadow: 2px 2px 0px #a67c52; /* Simulates an inset look */
+  border-radius: 4px; /* Slightly rounded corners */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.medieval-button:hover {
+  background-color: #8a6e2f; /* A lighter, worn wood color for hover */
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.3); /* A more pronounced shadow for hover */
+}
+
+.medieval-button:active {
+  box-shadow: inset 1px 1px 2px 0px rgba(0, 0, 0, 0.5); /* An inset shadow for a pressed effect */
+  transform: translateY(2px); /* Moves the button down to simulate a press */
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Quest</title>
+    <link href="style.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Macondo&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="intro">
+      <h1>DnD Solo Text Campain</h1>
+      <h2>
+        Hi im Ryan, the creator of this project,this is an interactive dnd game
+        where you can choose different options that leads to different paths,
+        will you be able to succeed or will you fail. This is an entirely
+        text-based game, so there will be no images or sounds.
+      </h2>
+    </div>
+    <div id="state">
+      <h2 id="class">Class:</h2>
+      <div id="statState">
+        <h2 id="str">Str:</h2>
+        <h2 id="dex">Dex:</h2>
+        <h2 id="con">Con:</h2>
+        <h2 id="int">Int:</h2>
+        <h2 id="wis">Wis:</h2>
+        <h2 id="cha">Cha:</h2>
+      </div>
+      <!-- <h2 id="armorClass">Armor Class:</h2> -->
+      <h2 id="dmgDice">Damage Dice:</h2>
+      <div>
+        <h2 id="inventory">Inventory:</h2>
+        <h3>Armor</h3>
+        <ul id="armorList">
+          You dont have anything...broke
+        </ul>
+        <h3>Weapons</h3>
+        <ul id="weaponsList">
+          You dont have anything...broke
+        </ul>
+        <h3>Utilities</h3>
+        <ul id="utilitiesList">
+          You dont have anything...broke
+        </ul>
+      </div>
+      <div><h2>GP:0</h2></div>
+      <!-- when have 0 gp say ur broke -->
+    </div>
+    <div id="creation">
+      <div id="classes">
+        <h2>Choose your dnd class:</h2>
+        <button onclick="classChoose('Barbarian')">Barbarian</button>
+        <button onclick="classChoose('Bard')">Bard</button>
+        <button onclick="classChoose('Cleric')">Cleric</button>
+        <button onclick="classChoose('Paladin')">Paladin</button>
+        <button onclick="classChoose('Rogue')">Rogue</button>
+        <button onclick="classChoose('Wizard')">Wizard</button>
+      </div>
+      <div id="stats">
+        <button>Roll for stats</button>
+      </div>
+    </div>
+    <div id="adventure"></div>
+    <div id="finalBoss"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
