@@ -106,7 +106,7 @@ const classData = {
       Int: 0,
       Wis: 0,
       Cha: 0,
-      //priority for  1.int 2.con 3.dex 4.wis 5.cha 6.str
+      priority: ["Int", "Con", "Dex", "Wis", "Cha", "Str"],
     },
     startItems: {
       armor: [],
@@ -130,6 +130,7 @@ const inventory = document.getElementById("inventory");
 const armorList = document.getElementById("armorList");
 const weaponsList = document.getElementById("weaponsList");
 const utilitiesList = document.getElementById("utilitiesList");
+const GP = document.getElementById("GP");
 //functions
 function stateUpdate() {
   classState.innerText = `Class: ${gameState.Class}`;
@@ -142,6 +143,7 @@ function stateUpdate() {
   updateInven(weaponsList, gameState["Inventory"]["weapons"]);
   updateInven(armorList, gameState["Inventory"]["armor"]);
   updateInven(utilitiesList, gameState["Inventory"]["utility"]);
+  GP.innerText = `GP: ${gameState.Inventory.GP}`;
 }
 function classChoose(classChosen) {
   console.log(classData[classChosen]);
@@ -157,9 +159,35 @@ function classChoose(classChosen) {
   gameState["Inventory"]["utility"] =
     classData[classChosen]["startItems"]["utility"];
   console.log(gameState);
+  gameState["Inventory"]["GP"] = classData[classChosen]["startItems"]["GP"];
   stateUpdate();
 }
-function rollStats() {}
+function rollStats() {
+  if (gameState["Class"] === "Choose one already") {
+    alert("Please choose your class first, thank you for your cooperation.");
+    return;
+  }
+  var allSums = [];
+  for (let i = 0; i < 6; i += 1) {
+    var allRolls = [];
+    var sum = 0;
+    for (let j = 0; j < 4; j += 1) {
+      var number = Math.ceil(Math.random() * 6);
+      sum += number;
+      allRolls.push(number);
+    }
+    sum -= Math.min(...allRolls);
+    allSums.push(sum);
+    console.log(allSums);
+  }
+  assignStats(allSums.toSorted((a, b) => b - a));
+}
+function assignStats(sortStats) {
+  console.log(sortStats);
+  for (let i = 0; i < 6; i += 1) {
+    gameState["Stats"][classData][gameState["Class"]]["startStats"]["priority"][i]
+  }
+}
 stateUpdate();
 function updateInven(elements, items) {
   if (!elements) return;

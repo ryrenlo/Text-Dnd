@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Quest</title>
+    <title>DnD Solo Text Campain</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,20 +36,20 @@
       <h2 id="dmgDice">Damage Dice:</h2>
       <div>
         <h2 id="inventory">Inventory:</h2>
-        <h3>Armor</h3>
+        <h2>Armor</h3>
         <ul id="armorList">
           You dont have anything...broke
         </ul>
-        <h3>Weapons</h3>
+        <h2>Weapons</h3>
         <ul id="weaponsList">
           You dont have anything...broke
         </ul>
-        <h3>Utilities</h3>
+        <h2>Utilities</h3>
         <ul id="utilitiesList">
           You dont have anything...broke
         </ul>
       </div>
-      <div><h2>GP:0</h2></div>
+      <div><h2 id="GP">GP:0</h2></div>
       <!-- when have 0 gp say ur broke -->
     </div>
     <div id="creation">
@@ -63,7 +63,7 @@
         <button onclick="classChoose('Wizard')">Wizard</button>
       </div>
       <div id="stats">
-        <button>Roll for stats</button>
+        <button onclick="rollStats()">Roll for stats</button>
       </div>
     </div>
     <div id="adventure"></div>
