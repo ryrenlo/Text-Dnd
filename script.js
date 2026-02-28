@@ -2,12 +2,12 @@ const gameState = {
   Name: "WIP",
   Class: "Choose one already",
   Stats: {
-    Str: "You haven't rolled yet",
-    Dex: "You haven't rolled yet",
-    Con: "You haven't rolled yet",
-    Int: "You haven't rolled yet",
-    Wis: "You haven't rolled yet",
-    Cha: "You haven't rolled yet",
+    Str: "You haven't rolled",
+    Dex: "You haven't rolled",
+    Con: "You haven't rolled",
+    Int: "You haven't rolled",
+    Wis: "You haven't rolled",
+    Cha: "You haven't rolled",
   },
   Inventory: {
     armor: [],
@@ -15,7 +15,7 @@ const gameState = {
     utility: [],
     GP: 0,
   },
-  currentStage: "",
+  currentStage: "start",
 };
 
 //Classes
@@ -116,22 +116,83 @@ const classData = {
     },
   },
 };
+const adventureTest = {
+  start: {
+    question: "1.(insert question here)",
+    answers: [
+      { option: "(insert option.1 here)", next: "next1", GP: "5" },
+      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
+      {
+        option: "(insert option.3 here)",
+        next: "next3",
+        items: "simpleWeapons",
+      },
+    ],
+  },
+  next1: {
+    question: "2a.(insert question1 here)",
+    answers: [
+      { option: "(insert optiobhbhbhbhbn.1 here)", next: "next1", GP: "5" },
+      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
+      {
+        option: "(insert option.3 here)",
+        next: "next3",
+        items: "simpleWeapons",
+      },
+    ],
+  },
+  next2: {
+    question: "2b.(insert question2 here)",
+    answers: [
+      { option: "(insert option.1 here)", next: "next1", GP: "5" },
+      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
+      {
+        option: "(insert option.3 here)",
+        next: "next3",
+        items: "simpleWeapons",
+      },
+    ],
+  },
+  next3: {
+    question: "2c.(insert question3 here)",
+    answers: [
+      { option: "(insert option.1 here)", next: "next1", GP: "5" },
+      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
+      {
+        option: "(insert option.3 here)",
+        next: "next3",
+        items: "simpleWeapons",
+      },
+    ],
+  },
+};
+var rollTimes = 0;
 //elements
-const classState = document.getElementById("class");
+
+const GP = document.getElementById("GP");
 const str = document.getElementById("str");
 const dex = document.getElementById("dex");
 const con = document.getElementById("con");
 const int = document.getElementById("int");
 const wis = document.getElementById("wis");
 const cha = document.getElementById("cha");
-//const armorClass = document.getElementById("armorClass");
+const options = document.getElementById("options");
 const dmgDice = document.getElementById("dmgDice");
+const classState = document.getElementById("class");
+const question = document.getElementById("question");
+const creation = document.getElementById("creation");
 const inventory = document.getElementById("inventory");
 const armorList = document.getElementById("armorList");
+const adventureDiv = document.getElementById("adventure");
+const finalBossDiv = document.getElementById("finalBoss");
 const weaponsList = document.getElementById("weaponsList");
 const utilitiesList = document.getElementById("utilitiesList");
-const GP = document.getElementById("GP");
+
 //functions
+function pageload() {
+  adventureDiv.style.display = "none";
+  finalBossDiv.style.display = "none";
+}
 function stateUpdate() {
   classState.innerText = `Class: ${gameState.Class}`;
   str.innerText = `Str: ${gameState.Stats.Str}`;
@@ -162,7 +223,13 @@ function classChoose(classChosen) {
   gameState["Inventory"]["GP"] = classData[classChosen]["startItems"]["GP"];
   stateUpdate();
 }
+//1 reroll wip
 function rollStats() {
+  rollTimes += 1;
+  if (rollTimes == 3) {
+    confirm();
+    return;
+  }
   if (gameState["Class"] === "Choose one already") {
     alert("Please choose your class first, thank you for your cooperation.");
     return;
@@ -185,8 +252,12 @@ function rollStats() {
 function assignStats(sortStats) {
   console.log(sortStats);
   for (let i = 0; i < 6; i += 1) {
-    gameState["Stats"][classData][gameState["Class"]]["startStats"]["priority"][i]
+    gameState["Stats"][
+      classData[gameState["Class"]]["startStats"]["priority"][i]
+    ] = sortStats[i];
   }
+  console.log(gameState);
+  stateUpdate();
 }
 stateUpdate();
 function updateInven(elements, items) {
@@ -200,5 +271,39 @@ function updateInven(elements, items) {
     const li = document.createElement("li");
     li.textContent = item;
     elements.appendChild(li);
+  });
+}
+function confirm() {
+  if (gameState["Stats"]["Str"] === "You haven't rolled") {
+    alert(
+      "Please choose your class first and roll your stats, thank you for your cooperation.",
+    );
+    return;
+  }
+  // hide creation panel
+  creation.style.display = "none";
+  // move adventure into the creation grid area so it takes the place
+  if (adventureDiv) {
+    adventureDiv.style.display = "block";
+    adventureDiv.style.gridArea = "creation";
+  }
+  startAdv();
+  createButtons();
+}
+
+function startAdv() {
+  question.innerText = adventureTest.start.question;
+}
+
+function createButtons() {
+  // clear existing options
+  options.innerHTML = "";
+
+  const answers = adventureTest[gameState.currentStage]?.answers || [];
+  answers.forEach((element, index) => {
+    const button = document.createElement("button");
+    button.innerText = element.option;
+    button.onclick = () => next(index);
+    options.appendChild(button);
   });
 }
