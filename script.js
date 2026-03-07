@@ -20,25 +20,6 @@ const gameState = {
 
 //Classes
 const classData = {
-  Rogue: {
-    classname: "Rogue",
-    startStats: {
-      Hp: 8,
-      Str: 0,
-      Dex: 0,
-      Con: 0,
-      Int: 0,
-      Wis: 0,
-      Cha: 0,
-      //priority for rogue 1.dex 2.con 3.cha 4.int 5.wis 6.str
-    },
-    startItems: {
-      armor: ["Leather Armor"],
-      weapons: ["Daggers", "Shortsword", "Shortbow"],
-      utility: ["Thieves Tools"],
-      GP: 8,
-    },
-  },
   Barbarian: {
     classname: "Barbarian",
     startStats: {
@@ -49,7 +30,7 @@ const classData = {
       Int: 0,
       Wis: 0,
       Cha: 0,
-      //priority for barbarian 1.str 2.con 3.dex 4.wis 5.cha 6.int
+      priority: ["Str", "Con", "Dex", "Wis", "Cha", "Int"],
     },
     startItems: {
       armor: [],
@@ -68,7 +49,7 @@ const classData = {
       Int: 0,
       Wis: 0,
       Cha: 0,
-      //priority for  1.Cha 2.Dex 3.Con 4.wis 5.int 6.str
+      priority: ["Cha", "Dex", "Con", "Wis", "Int", "Str"],
     },
     startItems: {
       armor: ["Leather Armor"],
@@ -87,13 +68,51 @@ const classData = {
       Int: 0,
       Wis: 0,
       Cha: 0,
-      //priority for  1.wis 2.con 3.dex 4.str 5.cha 6.int
+      priority: ["Wis", "Con", "Dex", "Str", "Cha", "Int"],
     },
     startItems: {
       armor: ["Chain Skirt", "Shield"],
       weapons: ["Mace"],
       utility: [],
       GP: 7,
+    },
+  },
+  Ranger: {
+    classname: "Ranger",
+    startStats: {
+      Hp: 10,
+      Str: 0,
+      Dex: 0,
+      Con: 0,
+      Int: 0,
+      Wis: 0,
+      Cha: 0,
+      priority: ["Dex", "Con", "Wis", "Str", "Cha", "Int"],
+    },
+    startItems: {
+      armor: ["Studded Leather Armor"],
+      weapons: ["Scimitar", "Shortsword", "Longbow"],
+      utility: [],
+      GP: 7,
+    },
+  },
+  Rogue: {
+    classname: "Rogue",
+    startStats: {
+      Hp: 8,
+      Str: 0,
+      Dex: 0,
+      Con: 0,
+      Int: 0,
+      Wis: 0,
+      Cha: 0,
+      priority: ["Dex", "Con", "Cha", "Int", "Wis", "Str"],
+    },
+    startItems: {
+      armor: ["Leather Armor"],
+      weapons: ["Daggers", "Shortsword", "Shortbow"],
+      utility: ["Thieves Tools"],
+      GP: 8,
     },
   },
   Wizard: {
@@ -350,8 +369,8 @@ function createButtons() {
   });
 }
 function chooseWeapon(category) {
-fetch("loot.json").then((response) => {
-  const meowResponse=response.json().category
-  const randy = Math.floor(Math.random()*meowResponse.length)
+  fetch("loot.json").then((response) => {
+    const meowResponse = response.json().category;
+    const randy = Math.floor(Math.random() * meowResponse.length);
   });
 }
