@@ -118,7 +118,7 @@ const classData = {
 };
 const adventureTest = {
   start: {
-    question: "1.(insert question here)",
+    question: "1.(insert question 1 here)",
     answers: [
       { option: "(insert option.1 here)", next: "next1", GP: "5" },
       { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
@@ -132,12 +132,18 @@ const adventureTest = {
   next1: {
     question: "2a.(insert question1 here)",
     answers: [
-      { option: "(insert optiobhbhbhbhbn.1 here)", next: "next1", GP: "5" },
-      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
+      { option: "(insert option.1 here)", next: "next1", GP: "5" },
+      {
+        option: "(insert option.2 here)",
+        next: "next2",
+        battle: "forestEasy",
+        GP: "0",
+      },
       {
         option: "(insert option.3 here)",
         next: "next3",
         items: "simpleWeapons",
+        GP: "0",
       },
     ],
   },
@@ -145,11 +151,17 @@ const adventureTest = {
     question: "2b.(insert question2 here)",
     answers: [
       { option: "(insert option.1 here)", next: "next1", GP: "5" },
-      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
+      {
+        option: "(insert option.2 here)",
+        next: "next2",
+        battle: "forestEasy",
+        GP: "0",
+      },
       {
         option: "(insert option.3 here)",
         next: "next3",
         items: "simpleWeapons",
+        GP: "0",
       },
     ],
   },
@@ -157,11 +169,17 @@ const adventureTest = {
     question: "2c.(insert question3 here)",
     answers: [
       { option: "(insert option.1 here)", next: "next1", GP: "5" },
-      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
+      {
+        option: "(insert option.2 here)",
+        next: "next2",
+        battle: "forestEasy",
+        GP: "0",
+      },
       {
         option: "(insert option.3 here)",
         next: "next3",
         items: "simpleWeapons",
+        GP: "0",
       },
     ],
   },
@@ -294,7 +312,31 @@ function confirm() {
 function startAdv() {
   question.innerText = adventureTest.start.question;
 }
+function next(index) {
+  const stage = adventureTest[gameState.currentStage];
+  if (!stage) {
+    console.error("Invalid currentStage:", gameState.currentStage);
+    return;
+  }
+  const answer = stage.answers?.[index];
+  if (!answer) {
+    console.error(
+      "Invalid answer index:",
+      index,
+      "for stage:",
+      gameState.currentStage,
+    );
+    return;
+  }
 
+  const gpGain = parseInt(answer.GP || 0, 10);
+  gameState.Inventory.GP = parseInt(gameState.Inventory.GP || 0, 10) + gpGain;
+  gameState.currentStage = answer.next || gameState.currentStage;
+  createButtons();
+  const newStage = adventureTest[gameState.currentStage];
+  question.innerText = newStage?.question || "";
+  stateUpdate();
+}
 function createButtons() {
   // clear existing options
   options.innerHTML = "";
@@ -305,5 +347,11 @@ function createButtons() {
     button.innerText = element.option;
     button.onclick = () => next(index);
     options.appendChild(button);
+  });
+}
+function chooseWeapon(category) {
+fetch("loot.json").then((response) => {
+  const meowResponse=response.json().category
+  const randy = Math.floor(Math.random()*meowResponse.length)
   });
 }
