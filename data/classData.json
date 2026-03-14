@@ -1,0 +1,116 @@
+{
+  "Barbarian": {
+    "classname": "Barbarian",
+    "startStats": {
+      "Hp": 12,
+      "Str": 0,
+      "Dex": 0,
+      "Con": 0,
+      "Int": 0,
+      "Wis": 0,
+      "Cha": 0,
+      "priority": ["Str", "Con", "Dex", "Wis", "Cha", "Int"]
+    },
+    "startItems": {
+      "armor": [],
+      "weapons": ["Greataxe", "Handaxes"],
+      "utility": [],
+      "GP": 15
+    }
+  },
+  "Bard": {
+    "classname": "Bard",
+    "startStats": {
+      "Hp": 8,
+      "Str": 0,
+      "Dex": 0,
+      "Con": 0,
+      "Int": 0,
+      "Wis": 0,
+      "Cha": 0,
+      "priority": ["Cha", "Dex", "Con", "Wis", "Int", "Str"]
+    },
+    "startItems": {
+      "armor": ["Leather Armor"],
+      "weapons": ["Daggers", "Lute"],
+      "utility": [],
+      "GP": 19
+    }
+  },
+  "Cleric": {
+    "classname": "Cleric",
+    "startStats": {
+      "Hp": 8,
+      "Str": 0,
+      "Dex": 0,
+      "Con": 0,
+      "Int": 0,
+      "Wis": 0,
+      "Cha": 0,
+      "priority": ["Wis", "Con", "Dex", "Str", "Cha", "Int"]
+    },
+    "startItems": {
+      "armor": ["Chain Skirt", "Shield"],
+      "weapons": ["Mace"],
+      "utility": [],
+      "GP": 7
+    }
+  },
+  "Ranger": {
+    "classname": "Ranger",
+    "startStats": {
+      "Hp": 10,
+      "Str": 0,
+      "Dex": 0,
+      "Con": 0,
+      "Int": 0,
+      "Wis": 0,
+      "Cha": 0,
+      "priority": ["Dex", "Con", "Wis", "Str", "Cha", "Int"]
+    },
+    "startItems": {
+      "armor": ["Studded Leather Armor"],
+      "weapons": ["Scimitar", "Shortsword", "Longbow"],
+      "utility": [],
+      "GP": 7
+    }
+  },
+  "Rogue": {
+    "classname": "Rogue",
+    "startStats": {
+      "Hp": 8,
+      "Str": 0,
+      "Dex": 0,
+      "Con": 0,
+      "Int": 0,
+      "Wis": 0,
+      "Cha": 0,
+      "priority": ["Dex", "Con", "Cha", "Int", "Wis", "Str"]
+    },
+    "startItems": {
+      "armor": ["Leather Armor"],
+      "weapons": ["Daggers", "Shortsword", "Shortbow"],
+      "utility": ["Thieves Tools"],
+      "GP": 8
+    }
+  },
+  "Wizard": {
+    "classname": "Wizard",
+    "startStats": {
+      "Hp": 6,
+      "Str": 0,
+      "Dex": 0,
+      "Con": 0,
+      "Int": 0,
+      "Wis": 0,
+      "Cha": 0,
+      "priority": ["Int", "Con", "Dex", "Wis", "Cha", "Str"]
+    },
+    "startItems": {
+      "armor": [],
+      "weapons": ["Daggers", "Quarter Staff"],
+      "utility": ["Robe", "Spellbook"],
+      "GP": 5
+    }
+  }
+}

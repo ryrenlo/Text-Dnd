@@ -1,0 +1,72 @@
+{
+  "start": {
+    "question": "1.(insert question 1 here)",
+    "answers": [
+      { "option": "(insert option.1 here)", "next": "next1", "GP": "5" },
+      {
+        "option": "(insert option.2 here)",
+        "next": "next2",
+        "battle": "forestEasy"
+      },
+      {
+        "option": "(insert option.3 here)",
+        "next": "next3",
+        "items": "simpleWeapons"
+      }
+    ]
+  },
+  "next1": {
+    "question": "2a.(insert question1 here)",
+    "answers": [
+      { "option": "(insert option.1 here)", "next": "next1", "GP": "5" },
+      {
+        "option": "(insert option.2 here)",
+        "next": "next2",
+        "battle": "forestEasy",
+        "GP": "0"
+      },
+      {
+        "option": "(insert option.3 here)",
+        "next": "next3",
+        "items": "simpleWeapons",
+        "GP": "0"
+      }
+    ]
+  },
+  "next2": {
+    "question": "2b.(insert question2 here)",
+    "answers": [
+      { "option": "(insert option.1 here)", "next": "next1", "GP": "5" },
+      {
+        "option": "(insert option.2 here)",
+        "next": "next2",
+        "battle": "forestEasy",
+        "GP": "0"
+      },
+      {
+        "option": "(insert option.3 here)",
+        "next": "next3",
+        "items": "simpleWeapons",
+        "GP": "0"
+      }
+    ]
+  },
+  "next3": {
+    "question": "2c.(insert question3 here)",
+    "answers": [
+      { "option": "(insert option.1 here)", "next": "next1", "GP": "5" },
+      {
+        "option": "(insert option.2 here)",
+        "next": "next2",
+        "battle": "forestEasy",
+        "GP": "0"
+      },
+      {
+        "option": "(insert option.3 here)",
+        "next": "next3",
+        "items": "simpleWeapons",
+        "GP": "0"
+      }
+    ]
+  }
+}

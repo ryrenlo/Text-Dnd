@@ -17,192 +17,7 @@ const gameState = {
   },
   currentStage: "start",
 };
-
-//Classes
-const classData = {
-  Barbarian: {
-    classname: "Barbarian",
-    startStats: {
-      Hp: 12,
-      Str: 0,
-      Dex: 0,
-      Con: 0,
-      Int: 0,
-      Wis: 0,
-      Cha: 0,
-      priority: ["Str", "Con", "Dex", "Wis", "Cha", "Int"],
-    },
-    startItems: {
-      armor: [],
-      weapons: ["Greataxe", "Handaxes"],
-      utility: [],
-      GP: 15,
-    },
-  },
-  Bard: {
-    classname: "Bard",
-    startStats: {
-      Hp: 8,
-      Str: 0,
-      Dex: 0,
-      Con: 0,
-      Int: 0,
-      Wis: 0,
-      Cha: 0,
-      priority: ["Cha", "Dex", "Con", "Wis", "Int", "Str"],
-    },
-    startItems: {
-      armor: ["Leather Armor"],
-      weapons: ["Daggers", "Lute"],
-      utility: [],
-      GP: 19,
-    },
-  },
-  Cleric: {
-    classname: "Cleric",
-    startStats: {
-      Hp: 8,
-      Str: 0,
-      Dex: 0,
-      Con: 0,
-      Int: 0,
-      Wis: 0,
-      Cha: 0,
-      priority: ["Wis", "Con", "Dex", "Str", "Cha", "Int"],
-    },
-    startItems: {
-      armor: ["Chain Skirt", "Shield"],
-      weapons: ["Mace"],
-      utility: [],
-      GP: 7,
-    },
-  },
-  Ranger: {
-    classname: "Ranger",
-    startStats: {
-      Hp: 10,
-      Str: 0,
-      Dex: 0,
-      Con: 0,
-      Int: 0,
-      Wis: 0,
-      Cha: 0,
-      priority: ["Dex", "Con", "Wis", "Str", "Cha", "Int"],
-    },
-    startItems: {
-      armor: ["Studded Leather Armor"],
-      weapons: ["Scimitar", "Shortsword", "Longbow"],
-      utility: [],
-      GP: 7,
-    },
-  },
-  Rogue: {
-    classname: "Rogue",
-    startStats: {
-      Hp: 8,
-      Str: 0,
-      Dex: 0,
-      Con: 0,
-      Int: 0,
-      Wis: 0,
-      Cha: 0,
-      priority: ["Dex", "Con", "Cha", "Int", "Wis", "Str"],
-    },
-    startItems: {
-      armor: ["Leather Armor"],
-      weapons: ["Daggers", "Shortsword", "Shortbow"],
-      utility: ["Thieves Tools"],
-      GP: 8,
-    },
-  },
-  Wizard: {
-    classname: "Wizard",
-    startStats: {
-      Hp: 6,
-      Str: 0,
-      Dex: 0,
-      Con: 0,
-      Int: 0,
-      Wis: 0,
-      Cha: 0,
-      priority: ["Int", "Con", "Dex", "Wis", "Cha", "Str"],
-    },
-    startItems: {
-      armor: [],
-      weapons: ["Daggers", "Quarter Staff"],
-      utility: ["Robe", "Spellbook"],
-      GP: 5,
-    },
-  },
-};
-const adventureTest = {
-  start: {
-    question: "1.(insert question 1 here)",
-    answers: [
-      { option: "(insert option.1 here)", next: "next1", GP: "5" },
-      { option: "(insert option.2 here)", next: "next2", battle: "forestEasy" },
-      {
-        option: "(insert option.3 here)",
-        next: "next3",
-        items: "simpleWeapons",
-      },
-    ],
-  },
-  next1: {
-    question: "2a.(insert question1 here)",
-    answers: [
-      { option: "(insert option.1 here)", next: "next1", GP: "5" },
-      {
-        option: "(insert option.2 here)",
-        next: "next2",
-        battle: "forestEasy",
-        GP: "0",
-      },
-      {
-        option: "(insert option.3 here)",
-        next: "next3",
-        items: "simpleWeapons",
-        GP: "0",
-      },
-    ],
-  },
-  next2: {
-    question: "2b.(insert question2 here)",
-    answers: [
-      { option: "(insert option.1 here)", next: "next1", GP: "5" },
-      {
-        option: "(insert option.2 here)",
-        next: "next2",
-        battle: "forestEasy",
-        GP: "0",
-      },
-      {
-        option: "(insert option.3 here)",
-        next: "next3",
-        items: "simpleWeapons",
-        GP: "0",
-      },
-    ],
-  },
-  next3: {
-    question: "2c.(insert question3 here)",
-    answers: [
-      { option: "(insert option.1 here)", next: "next1", GP: "5" },
-      {
-        option: "(insert option.2 here)",
-        next: "next2",
-        battle: "forestEasy",
-        GP: "0",
-      },
-      {
-        option: "(insert option.3 here)",
-        next: "next3",
-        items: "simpleWeapons",
-        GP: "0",
-      },
-    ],
-  },
-};
+let adventureTest = {};
 var rollTimes = 0;
 //elements
 
@@ -329,7 +144,7 @@ function confirm() {
 }
 
 function startAdv() {
-  question.innerText = adventureTest.start.question;
+  question.innerText = adventureTest.start?.question || "";
 }
 function next(index) {
   const stage = adventureTest[gameState.currentStage];
@@ -369,8 +184,36 @@ function createButtons() {
   });
 }
 function chooseWeapon(category) {
-  fetch("loot.json").then((response) => {
-    const meowResponse = response.json().category;
-    const randy = Math.floor(Math.random() * meowResponse.length);
-  });
+  // fetch the loot file and pick an item from the specified category
+  return fetch("data/loot.json")
+    .then((res) => res.json())
+    .then((loot) => {
+      const list = loot[category] || [];
+      if (!list.length) return null;
+      const randy = Math.floor(Math.random() * list.length);
+      const item = list[randy];
+      // add to inventory if it's a weapon
+      if (!gameState.Inventory.weapons.includes(item)) {
+        gameState.Inventory.weapons.push(item);
+      }
+      stateUpdate();
+      return item;
+    });
 }
+
+// load external JSON data used by the game
+function loadGameData() {
+  return Promise.all([
+    fetch("data/classData.json").then((r) => r.json()),
+    fetch("data/adventureTest.json").then((r) => r.json()),
+  ])
+    .then(([cd, at]) => {
+      classData = cd;
+      adventureTest = at;
+      // refresh UI now that data is available
+      stateUpdate();
+    })
+    .catch((err) => console.error("Failed to load game data:", err));
+}
+// start loading data immediately
+loadGameData();
