@@ -13,7 +13,10 @@
     },
     "startItems": {
       "armor": [],
-      "weapons": ["Greataxe", "Handaxes"],
+      "weapons": [
+        { "name": "Greataxe", "min": 1, "max": 12 },
+        { "name": "Handaxe", "min": 1, "max": 6 }
+      ],
       "utility": [],
       "GP": 15
     }
@@ -32,7 +35,7 @@
     },
     "startItems": {
       "armor": ["Leather Armor"],
-      "weapons": ["Daggers", "Lute"],
+      "weapons": [{ "name": "Dagger", "min": 1, "max": 4 }, "Lute"],
       "utility": [],
       "GP": 19
     }
@@ -51,7 +54,7 @@
     },
     "startItems": {
       "armor": ["Chain Skirt", "Shield"],
-      "weapons": ["Mace"],
+      "weapons": [{ "name": "Mace", "min": 1, "max": 6 }],
       "utility": [],
       "GP": 7
     }
@@ -70,7 +73,11 @@
     },
     "startItems": {
       "armor": ["Studded Leather Armor"],
-      "weapons": ["Scimitar", "Shortsword", "Longbow"],
+      "weapons": [
+        { "name": "Scimitar", "min": 1, "max": 8 },
+        { "name": "Shortsword", "min": 1, "max": 6 },
+        { "name": "Longbow", "min": 1, "max": 8 }
+      ],
       "utility": [],
       "GP": 7
     }
@@ -89,7 +96,11 @@
     },
     "startItems": {
       "armor": ["Leather Armor"],
-      "weapons": ["Daggers", "Shortsword", "Shortbow"],
+      "weapons": [
+        { "name": "Dagger", "min": 1, "max": 4 },
+        { "name": "Shortsword", "min": 1, "max": 6 },
+        { "name": "Shortbow", "min": 1, "max": 6 }
+      ],
       "utility": ["Thieves Tools"],
       "GP": 8
     }
@@ -108,7 +119,10 @@
     },
     "startItems": {
       "armor": [],
-      "weapons": ["Daggers", "Quarter Staff"],
+      "weapons": [
+        { "name": "Dagger", "min": 1, "max": 4 },
+        { "name": "Quarterstaff", "min": 1, "max": 6 }
+      ],
       "utility": ["Robe", "Spellbook"],
       "GP": 5
     }

@@ -31,19 +31,19 @@ const cha = document.getElementById("cha");
 const options = document.getElementById("options");
 const dmgDice = document.getElementById("dmgDice");
 const classState = document.getElementById("class");
+const battleDiv = document.getElementById("battle");
 const question = document.getElementById("question");
 const creation = document.getElementById("creation");
 const inventory = document.getElementById("inventory");
 const armorList = document.getElementById("armorList");
 const adventureDiv = document.getElementById("adventure");
-const finalBossDiv = document.getElementById("finalBoss");
 const weaponsList = document.getElementById("weaponsList");
 const utilitiesList = document.getElementById("utilitiesList");
 
 //functions
 function pageload() {
   adventureDiv.style.display = "none";
-  finalBossDiv.style.display = "none";
+  battleDiv.style.display = "none";
 }
 function stateUpdate() {
   classState.innerText = `Class: ${gameState.Class}`;
@@ -121,7 +121,11 @@ function updateInven(elements, items) {
   elements.innerHTML = "";
   items.forEach((item) => {
     const li = document.createElement("li");
-    li.textContent = item;
+    if (item && typeof item === "object") {
+      li.textContent = item.name || JSON.stringify(item);
+    } else {
+      li.textContent = item;
+    }
     elements.appendChild(li);
   });
 }
@@ -169,6 +173,7 @@ function next(index) {
   createButtons();
   const newStage = adventureTest[gameState.currentStage];
   question.innerText = newStage?.question || "";
+  chooseWeapon();
   stateUpdate();
 }
 function createButtons() {
@@ -183,17 +188,23 @@ function createButtons() {
     options.appendChild(button);
   });
 }
-function chooseWeapon(category) {
+
+function chooseWeapon() {
   // fetch the loot file and pick an item from the specified category
   return fetch("data/loot.json")
     .then((res) => res.json())
     .then((loot) => {
-      const list = loot[category] || [];
+      var cat = ["simpleWeapons", "martialWeapons"];
+      var chosenCat = cat[Math.floor(Math.random() * cat.length)];
+      const list = loot[chosenCat] || [];
       if (!list.length) return null;
       const randy = Math.floor(Math.random() * list.length);
       const item = list[randy];
-      // add to inventory if it's a weapon
-      if (!gameState.Inventory.weapons.includes(item)) {
+      const itemName = item && typeof item === "object" ? item.name : item;
+      const ownedNames = gameState.Inventory.weapons.map((w) =>
+        w && typeof w === "object" ? w.name : w,
+      );
+      if (!ownedNames.includes(itemName)) {
         gameState.Inventory.weapons.push(item);
       }
       stateUpdate();

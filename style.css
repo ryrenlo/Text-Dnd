@@ -2,7 +2,7 @@ body {
   font-family: "Macondo", cursive;
   background-color: black;
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 400px;
   grid-template-rows: auto auto auto auto;
   grid-template-areas:
     "intro intro"
@@ -68,7 +68,7 @@ div {
   margin: 0;
   padding: 12px;
   align-self: start;
-  max-width: 320px;
+  max-width: 400px;
 }
 
 /* Place each left-area element into its own grid row */
