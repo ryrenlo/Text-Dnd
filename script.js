@@ -16,6 +16,7 @@ const gameState = {
     GP: 0,
   },
   currentStage: "start",
+  enemiesLeft: 0
 };
 let adventureTest = {};
 var rollTimes = 0;
@@ -166,7 +167,10 @@ function next(index) {
     );
     return;
   }
-
+  if (stage.answers[index].battle) {
+    showBattleUI();
+    adventureDiv.style.display = "none";
+  }
   const gpGain = parseInt(answer.GP || 0, 10);
   gameState.Inventory.GP = parseInt(gameState.Inventory.GP || 0, 10) + gpGain;
   gameState.currentStage = answer.next || gameState.currentStage;
@@ -228,3 +232,30 @@ function loadGameData() {
 }
 // start loading data immediately
 loadGameData();
+
+// ---------- Battle UI handlers (minimal placeholders) ----------
+function showBattleUI() {
+  if (!battleDiv) return;
+  battleDiv.style.display = "flex";
+}
+
+function hideBattleUI() {
+  if (!battleDiv) return;
+  battleDiv.style.display = "none";
+}
+
+function FIGHT(index) {
+  const stage = adventureTest[gameState.currentStage]
+  if (!stage.answers[index].battle) {
+    return;
+  }
+else if (stage.answers[index].battle=="Easy") {
+gameState.enemiesLeft=1
+}
+else if (stage.answers[index].battle=="Medium") {
+gameState.enemiesLeft=2
+}
+else if(stage.answers[index].battle=="Hard") {
+gameState.enemiesLeft=3
+}
+}

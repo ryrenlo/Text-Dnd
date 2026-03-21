@@ -6,7 +6,7 @@
       {
         "option": "(insert option.2 here)",
         "next": "next2",
-        "battle": "forestEasy"
+        "battle": "Easy"
       },
       {
         "option": "(insert option.3 here)",
@@ -22,7 +22,7 @@
       {
         "option": "(insert option.2 here)",
         "next": "next2",
-        "battle": "forestEasy",
+        "battle": "Easy",
         "GP": "0"
       },
       {
@@ -40,7 +40,7 @@
       {
         "option": "(insert option.2 here)",
         "next": "next2",
-        "battle": "forestEasy",
+        "battle": "Easy",
         "GP": "0"
       },
       {
@@ -58,7 +58,7 @@
       {
         "option": "(insert option.2 here)",
         "next": "next2",
-        "battle": "forestEasy",
+        "battle": "Easy",
         "GP": "0"
       },
       {

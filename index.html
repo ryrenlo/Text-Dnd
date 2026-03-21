@@ -19,7 +19,7 @@
         Hi im Ryan, the creator of this project,this is an interactive dnd game
         where you can choose different options that leads to different paths,
         will you be able to succeed or will you fail. This is an entirely
-        text-based game, so there will be no images or sounds.
+        text-based game, so there will be no images.
       </h2>
     </div>
     <div id="state">
@@ -78,7 +78,33 @@
         <button>(insert option here)</button>
       </div>
     </div>
-    <div id="Battle"></div>
+    <div id="battle" class="battle-container" style="display:none;">
+      <div class="combatant player">
+        <div class="hp-box">
+          <div class="hp-label">HP</div>
+          <div class="hp-value" id="player-hp-value">30/30</div>
+        </div>
+        <div class="name" id="player-name">My name</div>
+      </div>
+
+      <div class="battle-middle">
+        <div class="actions">
+          <button onclick="battleAttack()">Battle</button>
+          <button onclick="openMagic()">Magic</button>
+          <button onclick="openItems()">Items</button>
+          <button onclick="attemptEscape()">Escape?</button>
+        </div>
+        
+      </div>
+
+      <div class="combatant enemy">
+        <div class="hp-box">
+          <div class="hp-label">HP</div>
+          <div class="hp-value" id="enemy-hp-value">20/20</div>
+        </div>
+        <div class="name" id="enemy-name">Enemy</div>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
