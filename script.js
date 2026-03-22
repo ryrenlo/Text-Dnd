@@ -16,10 +16,10 @@ const gameState = {
     GP: 0,
   },
   currentStage: "start",
-  enemiesLeft: 0
+  enemiesLeft: 0,
 };
 let adventureTest = {};
-var rollTimes = 0;
+var rollsLeft = 2;
 //elements
 
 const GP = document.getElementById("GP");
@@ -40,9 +40,11 @@ const armorList = document.getElementById("armorList");
 const adventureDiv = document.getElementById("adventure");
 const weaponsList = document.getElementById("weaponsList");
 const utilitiesList = document.getElementById("utilitiesList");
+const rollsLeftEl = document.getElementById("rollsLeft");
 
 //functions
 function pageload() {
+  document.getElementById("rollsLeft").innerText = `Rolls Left: ${rollsLeft}`;
   adventureDiv.style.display = "none";
   battleDiv.style.display = "none";
 }
@@ -78,11 +80,12 @@ function classChoose(classChosen) {
 }
 //1 reroll wip
 function rollStats() {
-  rollTimes += 1;
-  if (rollTimes == 3) {
-    confirm();
+  rollsLeft -= 1;
+  if (rollsLeft <= -1) {
+    alert("You have no more rolls left, please confirm.")
     return;
   }
+  document.getElementById("rollsLeft").innerText = `Rolls Left: ${rollsLeft}`;
   if (gameState["Class"] === "Choose one already") {
     alert("Please choose your class first, thank you for your cooperation.");
     return;
@@ -245,17 +248,14 @@ function hideBattleUI() {
 }
 
 function FIGHT(index) {
-  const stage = adventureTest[gameState.currentStage]
+  const stage = adventureTest[gameState.currentStage];
   if (!stage.answers[index].battle) {
     return;
+  } else if (stage.answers[index].battle == "Easy") {
+    gameState.enemiesLeft = 1;
+  } else if (stage.answers[index].battle == "Medium") {
+    gameState.enemiesLeft = 2;
+  } else if (stage.answers[index].battle == "Hard") {
+    gameState.enemiesLeft = 3;
   }
-else if (stage.answers[index].battle=="Easy") {
-gameState.enemiesLeft=1
-}
-else if (stage.answers[index].battle=="Medium") {
-gameState.enemiesLeft=2
-}
-else if(stage.answers[index].battle=="Hard") {
-gameState.enemiesLeft=3
-}
 }
