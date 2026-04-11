@@ -17,13 +17,14 @@
     <div id="intro">
       <h1>DnD Solo Text Campain</h1>
       <h2>
-        Hi im Ryan, the creator of this project,this is an interactive dnd game
+        Hi im Ryan, the creator of this project,this is an interactive simplified DnD game
         where you can choose different options that leads to different paths,
         will you be able to succeed or will you fail. This is an entirely
         text-based game, so there will be no images.
       </h2>
     </div>
     <div id="state">
+      <h2 id="hp">HP: 0/0</h2>
       <h2 id="class">Class:</h2>
       <div id="statState">
         <h2 id="str">Str:</h2>
@@ -91,11 +92,12 @@
 
       <div class="battle-middle">
         <div class="actions">
-          <button onclick="battleAttack()">Battle</button>
+          <button onclick="attack()">Attack</button>
           <button onclick="openMagic()">Magic</button>
           <button onclick="openItems()">Items</button>
           <button onclick="attemptEscape()">Escape?</button>
         </div>
+        <div id="attackPanel" class="attack-panel" style="display:none"></div>
         
       </div>
 

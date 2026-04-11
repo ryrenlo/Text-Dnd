@@ -1,5 +1,7 @@
 const gameState = {
   Name: "WIP",
+  cHP: 0,
+  mHP: 0,
   Class: "Choose one already",
   Stats: {
     Str: "You haven't rolled",
@@ -23,6 +25,7 @@ var rollsLeft = 2;
 //elements
 
 const GP = document.getElementById("GP");
+const hp = document.getElementById("hp");
 const str = document.getElementById("str");
 const dex = document.getElementById("dex");
 const con = document.getElementById("con");
@@ -37,10 +40,12 @@ const question = document.getElementById("question");
 const creation = document.getElementById("creation");
 const inventory = document.getElementById("inventory");
 const armorList = document.getElementById("armorList");
+const rollsLeftEl = document.getElementById("rollsLeft");
 const adventureDiv = document.getElementById("adventure");
 const weaponsList = document.getElementById("weaponsList");
 const utilitiesList = document.getElementById("utilitiesList");
-const rollsLeftEl = document.getElementById("rollsLeft");
+const player_hp_value = document.getElementById("player-hp-value");
+const enemy_hp_value = document.getElementById("enemy-hp-value");
 
 //functions
 function pageload() {
@@ -56,6 +61,7 @@ function stateUpdate() {
   int.innerText = `Int: ${gameState.Stats.Int}`;
   wis.innerText = `Wis: ${gameState.Stats.Wis}`;
   cha.innerText = `Cha: ${gameState.Stats.Cha}`;
+  hp.innerText = `Hp: ${gameState.cHP}/${gameState.mHP}`;
   updateInven(weaponsList, gameState["Inventory"]["weapons"]);
   updateInven(armorList, gameState["Inventory"]["armor"]);
   updateInven(utilitiesList, gameState["Inventory"]["utility"]);
@@ -67,6 +73,8 @@ function classChoose(classChosen) {
     console.log("yo that class dont be existing rn...dumb dumb");
     return;
   }
+  gameState["mHP"] = classData[classChosen]["startStats"]["Hp"];
+  gameState["cHP"] = classData[classChosen]["startStats"]["Hp"];
   gameState["Class"] = classData[classChosen]["classname"];
   gameState["Inventory"]["armor"] =
     classData[classChosen]["startItems"]["armor"];
@@ -82,7 +90,7 @@ function classChoose(classChosen) {
 function rollStats() {
   rollsLeft -= 1;
   if (rollsLeft <= -1) {
-    alert("You have no more rolls left, please confirm.")
+    alert("You have no more rolls left, please confirm.");
     return;
   }
   document.getElementById("rollsLeft").innerText = `Rolls Left: ${rollsLeft}`;
@@ -236,10 +244,94 @@ function loadGameData() {
 // start loading data immediately
 loadGameData();
 
+// create a single tooltip element for weapon hover
+const _weaponTooltip = document.createElement("div");
+_weaponTooltip.className = "weapon-tooltip";
+_weaponTooltip.style.display = "none";
+document.body.appendChild(_weaponTooltip);
+
+function showWeaponTooltip(text, x, y) {
+  _weaponTooltip.innerText = text;
+  _weaponTooltip.style.display = "block";
+  const offset = 12;
+  // basic positioning; adjust if tooltip goes off-screen
+  const tooltipRect = _weaponTooltip.getBoundingClientRect();
+  let left = x + offset;
+  let top = y + offset;
+  if (left + tooltipRect.width > window.innerWidth) {
+    left = x - tooltipRect.width - offset;
+  }
+  if (top + tooltipRect.height > window.innerHeight) {
+    top = y - tooltipRect.height - offset;
+  }
+  _weaponTooltip.style.left = `${left}px`;
+  _weaponTooltip.style.top = `${top}px`;
+}
+
+function hideWeaponTooltip() {
+  _weaponTooltip.style.display = "none";
+}
+
 // ---------- Battle UI handlers (minimal placeholders) ----------
+function attack() {
+  const panel = document.getElementById("attackPanel");
+  if (!panel) return;
+  // toggle panel visibility
+  if (panel.style.display === "none" || !panel.style.display) {
+    panel.style.display = "flex";
+  } else {
+    panel.style.display = "none";
+    return;
+  }
+  panel.innerHTML = "";
+  const weapons = Array.isArray(gameState.Inventory.weapons)
+    ? gameState.Inventory.weapons
+    : [];
+  if (weapons.length === 0) {
+    const div = document.createElement("div");
+    div.innerText = "No weapons available";
+    panel.appendChild(div);
+    return;
+  }
+  weapons.forEach((w, i) => {
+    const name = w && typeof w === "object" ? w.name : w;
+    const max =
+      w && typeof w === "object"
+        ? (w.max ?? w.maxDamage ?? w.dmg ?? "N/A")
+        : "N/A";
+    const btn = document.createElement("button");
+    btn.className = "attack-weapon";
+    btn.innerText = name;
+    if (max !== "N/A") {
+      // custom tooltip handlers
+      btn.addEventListener("mouseenter", (e) =>
+        showWeaponTooltip(`Max damage: ${max}`, e.pageX, e.pageY),
+      );
+      btn.addEventListener("mousemove", (e) =>
+        showWeaponTooltip(`Max damage: ${max}`, e.pageX, e.pageY),
+      );
+      btn.addEventListener("mouseleave", hideWeaponTooltip);
+    }
+    btn.onclick = () => {
+      performWeaponAttack(w);
+    };
+    panel.appendChild(btn);
+  });
+}
 function showBattleUI() {
   if (!battleDiv) return;
   battleDiv.style.display = "flex";
+  // ensure enemy state exists when showing the battle UI
+  if (!gameState.enemy) {
+    const enemyNameEl = document.getElementById("enemy-name");
+    const defaultName = (enemyNameEl && enemyNameEl.innerText) || "Enemy";
+    gameState.enemy = {
+      name: defaultName,
+      mHP: 20,
+      cHP: 20,
+    };
+  }
+  startBattle();
 }
 
 function hideBattleUI() {
@@ -247,8 +339,9 @@ function hideBattleUI() {
   battleDiv.style.display = "none";
 }
 
-function FIGHT(index) {
+function startBattle(index) {
   const stage = adventureTest[gameState.currentStage];
+  battleUpdate();
   if (!stage.answers[index].battle) {
     return;
   } else if (stage.answers[index].battle == "Easy") {
@@ -258,4 +351,61 @@ function FIGHT(index) {
   } else if (stage.answers[index].battle == "Hard") {
     gameState.enemiesLeft = 3;
   }
+}
+function battleUpdate() {
+  player_hp_value.innerText = `${gameState.cHP}/${gameState.mHP}`;
+  if (enemy_hp_value && gameState.enemy) {
+    enemy_hp_value.innerText = `${gameState.enemy.cHP}/${gameState.enemy.mHP}`;
+  }
+}
+
+function rollWeaponDamage(weapon) {
+  if (!weapon || typeof weapon !== "object") return null;
+  const min = parseInt(weapon.min ?? weapon.minDamage ?? 1, 10);
+  const max = parseInt(weapon.max ?? weapon.maxDamage ?? weapon.dmg ?? min, 10);
+  if (Number.isNaN(min) || Number.isNaN(max) || max < min) return null;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function performWeaponAttack(weapon) {
+  const dmg = rollWeaponDamage(weapon);
+  if (dmg === null) {
+    console.log("Weapon has no damage data");
+    return;
+  }
+  if (!gameState.enemy) {
+    console.log("No enemy set");
+    return;
+  }
+  gameState.enemy.cHP = Math.max(0, gameState.enemy.cHP - dmg);
+  battleUpdate();
+
+  // show floating damage text near enemy
+  const dmgEl = document.createElement("div");
+  dmgEl.innerText = `-${dmg}`;
+  dmgEl.style.position = "absolute";
+  dmgEl.style.color = "#a33";
+  dmgEl.style.fontWeight = "bold";
+  dmgEl.style.left = window.innerWidth / 2 + 120 + "px"; // approximate near enemy panel
+  dmgEl.style.top = window.innerHeight / 2 - 40 + "px";
+  document.body.appendChild(dmgEl);
+  setTimeout(() => dmgEl.remove(), 900);
+
+  if (gameState.enemy.cHP <= 0) {
+    enemyDefeated();
+  }
+}
+
+function enemyDefeated() {
+  console.log("Enemy defeated");
+  // decrease enemiesLeft and hide battle UI if no enemies remain
+  gameState.enemiesLeft = Math.max(0, (gameState.enemiesLeft || 0) - 1);
+  const panel = document.getElementById("attackPanel");
+  if (panel) panel.style.display = "none";
+  // simple feedback: hide battle UI after short delay
+  setTimeout(() => {
+    hideBattleUI();
+    // clear enemy state
+    delete gameState.enemy;
+  }, 800);
 }
