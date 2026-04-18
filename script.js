@@ -21,6 +21,7 @@ const gameState = {
   enemiesLeft: 0,
 };
 let adventureTest = {};
+let enemyData = {};
 var rollsLeft = 2;
 //elements
 
@@ -179,7 +180,7 @@ function next(index) {
     return;
   }
   if (stage.answers[index].battle) {
-    showBattleUI();
+    showBattleUI(index);
     adventureDiv.style.display = "none";
   }
   const gpGain = parseInt(answer.GP || 0, 10);
@@ -232,10 +233,12 @@ function loadGameData() {
   return Promise.all([
     fetch("data/classData.json").then((r) => r.json()),
     fetch("data/adventureTest.json").then((r) => r.json()),
+    fetch("enemy.json").then((r) => r.json()),
   ])
-    .then(([cd, at]) => {
+    .then(([cd, at, ed]) => {
       classData = cd;
       adventureTest = at;
+      enemyData = ed;
       // refresh UI now that data is available
       stateUpdate();
     })
@@ -318,20 +321,50 @@ function attack() {
     panel.appendChild(btn);
   });
 }
-function showBattleUI() {
+function showBattleUI(index) {
   if (!battleDiv) return;
   battleDiv.style.display = "flex";
-  // ensure enemy state exists when showing the battle UI
+  adventureDiv.style.display = "none";
+  // choose a random enemy from loaded enemy data
   if (!gameState.enemy) {
+    let chosen = null;
+    const keys = Object.keys(enemyData || {});
+    if (keys.length > 0) {
+      const zone = keys[Math.floor(Math.random() * keys.length)];
+      const list = enemyData[zone] || [];
+      if (list.length > 0) {
+        const e = list[Math.floor(Math.random() * list.length)];
+        const hpMin = parseInt(e.hp?.min ?? 1, 10);
+        const hpMax = parseInt(e.hp?.max ?? hpMin, 10);
+        const atkMin = parseInt(e.attack?.min ?? 1, 10);
+        const atkMax = parseInt(e.attack?.max ?? atkMin, 10);
+        const mHP = Math.floor(Math.random() * (hpMax - hpMin + 1)) + hpMin;
+        chosen = {
+          name: e.name || "Enemy",
+          mHP,
+          cHP: mHP,
+          attackMin: atkMin,
+          attackMax: atkMax,
+        };
+      }
+    }
+    // fallback default
+    if (!chosen) {
+      const enemyNameEl = document.getElementById("enemy-name");
+      const defaultName = (enemyNameEl && enemyNameEl.innerText) || "Enemy";
+      chosen = {
+        name: defaultName,
+        mHP: 20,
+        cHP: 20,
+        attackMin: 1,
+        attackMax: 4,
+      };
+    }
+    gameState.enemy = chosen;
     const enemyNameEl = document.getElementById("enemy-name");
-    const defaultName = (enemyNameEl && enemyNameEl.innerText) || "Enemy";
-    gameState.enemy = {
-      name: defaultName,
-      mHP: 20,
-      cHP: 20,
-    };
+    if (enemyNameEl) enemyNameEl.innerText = gameState.enemy.name;
   }
-  startBattle();
+  startBattle(index);
 }
 
 function hideBattleUI() {
@@ -359,6 +392,17 @@ function battleUpdate() {
   }
 }
 
+function playerDefeated() {
+  alert("You have been defeated!");
+  hideBattleUI();
+  adventureDiv.style.display = "none";
+  creation.style.display = "block";
+  // restore player's HP to max for simplicity
+  gameState.cHP = gameState.mHP;
+  delete gameState.enemy;
+  stateUpdate();
+}
+
 function rollWeaponDamage(weapon) {
   if (!weapon || typeof weapon !== "object") return null;
   const min = parseInt(weapon.min ?? weapon.minDamage ?? 1, 10);
@@ -379,20 +423,19 @@ function performWeaponAttack(weapon) {
   }
   gameState.enemy.cHP = Math.max(0, gameState.enemy.cHP - dmg);
   battleUpdate();
-
-  // show floating damage text near enemy
-  const dmgEl = document.createElement("div");
-  dmgEl.innerText = `-${dmg}`;
-  dmgEl.style.position = "absolute";
-  dmgEl.style.color = "#a33";
-  dmgEl.style.fontWeight = "bold";
-  dmgEl.style.left = window.innerWidth / 2 + 120 + "px"; // approximate near enemy panel
-  dmgEl.style.top = window.innerHeight / 2 - 40 + "px";
-  document.body.appendChild(dmgEl);
-  setTimeout(() => dmgEl.remove(), 900);
-
   if (gameState.enemy.cHP <= 0) {
     enemyDefeated();
+  }
+  // if enemy still alive, enemy attacks back
+  else {
+    const atkMin = parseInt(gameState.enemy.attackMin ?? 1, 10);
+    const atkMax = parseInt(gameState.enemy.attackMax ?? atkMin, 10);
+    const edmg = Math.floor(Math.random() * (atkMax - atkMin + 1)) + atkMin;
+    gameState.cHP = Math.max(0, gameState.cHP - edmg);
+    battleUpdate();
+    if (gameState.cHP <= 0) {
+      playerDefeated();
+    }
   }
 }
 
@@ -405,6 +448,7 @@ function enemyDefeated() {
   // simple feedback: hide battle UI after short delay
   setTimeout(() => {
     hideBattleUI();
+    adventureDiv.style.display = "block";
     // clear enemy state
     delete gameState.enemy;
   }, 800);

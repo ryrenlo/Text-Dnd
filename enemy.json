@@ -1,0 +1,29 @@
+{
+  "forestEasy": [
+    {
+      "name": "Galeb Duhr",
+      "hp": { "min": 54, "max": 117 },
+      "attack": { "min": 7, "max": 17 }
+    },
+    {
+      "name": "Dryad",
+      "hp": { "min": 5, "max": 40 },
+      "attack": { "min": 5, "max": 12 }
+    },
+    {
+      "name": "Banshee",
+      "hp":{"min":13,"max":104},
+      "attack": { "min": 5, "max": 20 }
+    },
+    {
+      "name": "Ettercap",
+      "hp":{"min":16,"max":72},
+      "attack": { "min": 4, "max": 10 }
+    },
+    {
+      "name": "Ankheg",
+      "hp":{"min":12,"max":66},
+      "attack": { "min": 6, "max": 21 }
+    }
+  ]
+}
